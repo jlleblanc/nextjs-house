@@ -1,15 +1,17 @@
 {
-  "name": "learn-starter",
+  "name": "house",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "next": "9.3.5",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "sqlite3": "^5.0.0",
+    "ws": "^7.3.1"
   }
 }
