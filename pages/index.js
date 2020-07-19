@@ -1,9 +1,20 @@
 import Head from "next/head";
-import { useEffect } from "react";
+import Websocket from "react-websocket";
 
 function Login() {
+  const handleData = (data) => {
+    console.log(data);
+  };
+  const socket =
+    typeof window !== "undefined" ? (
+      <Websocket url="ws://localhost:3000" onMessage={handleData.bind(this)} />
+    ) : (
+      <div />
+    );
+
   return (
     <div>
+      {socket}
       <div className="card">
         <img
           alt="A photo of Joe LeBlanc and Andrew Asdell in adorable suits."
@@ -43,11 +54,6 @@ function Login() {
 }
 
 export default function Home() {
-  // No, in fact, this is not what we want because it happens post-render :(
-  useEffect(() => {
-    const socket = new WebSocket("ws://" + location.host);
-  });
-
   const content = <Login />;
 
   return (

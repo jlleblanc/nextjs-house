@@ -1,5 +1,5 @@
 {
-  "name": "House-of-Asdell-LeBlanc",
+  "name": "house-of-asdell-leblanc",
   "version": "0.1.0",
   "scripts": {
     "dev": "node server.js",
@@ -10,6 +10,7 @@
     "next": "9.3.5",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-websocket": "^2.1.0",
     "sqlite3": "^5.0.0",
     "ws": "^7.3.1"
   }
