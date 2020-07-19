@@ -1,7 +1,6 @@
 {
-  "name": "house",
+  "name": "House-of-Asdell-LeBlanc",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
