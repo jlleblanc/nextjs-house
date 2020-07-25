@@ -7,7 +7,10 @@ function Login() {
   };
   const socket =
     typeof window !== "undefined" ? (
-      <Websocket url="ws://localhost:3000" onMessage={handleData.bind(this)} />
+      <Websocket
+        url={"ws://" + location.host}
+        onMessage={handleData.bind(this)}
+      />
     ) : (
       <div />
     );
