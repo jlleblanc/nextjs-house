@@ -1,23 +1,12 @@
 import Head from "next/head";
-import Websocket from "react-websocket";
+import dynamic from "next/dynamic";
 
 function Login() {
-  const handleData = (data) => {
-    console.log(data);
-  };
-  const socket =
-    typeof window !== "undefined" ? (
-      <Websocket
-        url={"ws://" + location.host}
-        onMessage={handleData.bind(this)}
-      />
-    ) : (
-      <div />
-    );
+  const ChatSocket = dynamic(() => import("../components/ChatSocket"));
 
   return (
     <div>
-      {socket}
+      <ChatSocket />
       <div className="card">
         <img
           alt="A photo of Joe LeBlanc and Andrew Asdell in adorable suits."
