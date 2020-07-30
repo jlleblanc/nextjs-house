@@ -1,51 +1,10 @@
+// import React, { useState } from "react";
 import Head from "next/head";
-import dynamic from "next/dynamic";
-
-function Login() {
-  const ChatSocket = dynamic(() => import("../components/ChatSocket"));
-
-  return (
-    <div>
-      <ChatSocket />
-      <div className="card">
-        <img
-          alt="A photo of Joe LeBlanc and Andrew Asdell in adorable suits."
-          src="andrew-and-joe.jpg"
-          height="390"
-          width="400"
-        />
-      </div>
-
-      <h1 className="title">House of Asdell-LeBlanc</h1>
-
-      <p className="description">
-        Welcome to our house! Please enter a name to get started.
-      </p>
-
-      <form>
-        <p>
-          <input name="name" placeholder="your name here..." />
-        </p>
-
-        <p>
-          <label>
-            <input name="agree" type="checkbox" /> I agree to the{" "}
-            <a href="https://firstdonoharm.dev/version/2/1/license.html">
-              Hippocratic License
-            </a>
-            .
-          </label>
-        </p>
-
-        <p>
-          <button>Enter</button>
-        </p>
-      </form>
-    </div>
-  );
-}
+import Login from "./login";
+// import Chat from "./chat";
 
 export default function Home() {
+  // const [username] = useState();
   const content = <Login />;
 
   return (
