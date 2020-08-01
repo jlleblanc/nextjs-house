@@ -1,4 +1,12 @@
-export default function Login() {
+export default function Login({ enterUsernameHandler }) {
+  let submit = (e) => {
+    e.preventDefault();
+    // TODO: actual validation
+    enterUsernameHandler(e.target.getElementsByTagName("input")[0].value);
+  };
+
+  submit.bind(this);
+
   return (
     <div>
       <div className="card">
@@ -16,7 +24,7 @@ export default function Login() {
         Welcome to our house! Please enter a name to get started.
       </p>
 
-      <form>
+      <form onSubmit={submit}>
         <p>
           <input name="name" placeholder="your name here..." />
         </p>
