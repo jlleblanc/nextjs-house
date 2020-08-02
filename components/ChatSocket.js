@@ -1,14 +1,8 @@
-import Websocket from "react-websocket";
+import { webSocket } from "rxjs/webSocket";
 
-export default function ChatSocket() {
-  const handleData = (data) => {
-    console.log(data);
-  };
+export default function ChatSocket({ subject }) {
+  const webSocketSubject = webSocket("ws://" + location.host);
+  webSocketSubject.subscribe(subject);
 
-  return (
-    <Websocket
-      url={"ws://" + location.host}
-      onMessage={handleData.bind(this)}
-    />
-  );
+  return <div />;
 }

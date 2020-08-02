@@ -1,19 +1,24 @@
 import React, { useState } from "react";
 import Head from "next/head";
+import dynamic from "next/dynamic";
 import Login from "./login";
 import Chat from "./chat";
+import { Subject } from "rxjs";
 
 export default function Home() {
   const [username, setUsername] = useState();
+  const ChatSocket = dynamic(() => import("../components/ChatSocket"));
+  const chatSubject = new Subject();
 
   const content = username ? (
-    <Chat username={username} />
+    <Chat username={username} subject={chatSubject} />
   ) : (
     <Login enterUsernameHandler={setUsername} />
   );
 
   return (
     <div className="container">
+      <ChatSocket subject={chatSubject} />
       <Head>
         <title>House of Asdell-LeBlanc</title>
         <link rel="icon" href="/favicon.ico" />

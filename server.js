@@ -24,9 +24,10 @@ app.prepare().then(() => {
     ws.on("message", (message) => {
       //log the received message and send it back to the client
       console.log("received: %s", message);
-      ws.send(`Hello, you sent -> ${message}`);
+      ws.send(`{"message": "Hello, you sent -> ${message}"}`);
     });
 
-    ws.send("Hi there, I am a WebSocket server");
+    ws.send(`{"message": "Hi there, I am a WebSocket server"}`);
+    setInterval(() => ws.send(`{ "message": "test" }`), 1000);
   });
 });
