@@ -3,12 +3,14 @@ import React, { useState } from "react";
 export default function Chat({ username, subject }) {
   let [messages, setMessages] = useState([]);
 
-  subject.subscribe((json) => {
-    console.log("in component", json.message);
-    let newMessages = [...messages];
-    newMessages.push(json.message);
-    setMessages(newMessages);
-  });
+  if (subject) {
+    subject.subscribe((json) => {
+      console.log("in component", json.message);
+      let newMessages = [...messages];
+      newMessages.push(json.message);
+      setMessages(newMessages);
+    });
+  }
 
   return (
     <div>
