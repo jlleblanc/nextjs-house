@@ -5,19 +5,22 @@ export default function Chat({ username, subject }) {
 
   if (subject) {
     subject.subscribe((json) => {
-      console.log("in component", json.message);
       let newMessages = [...messages];
-      newMessages.push(json.message);
+      newMessages.push(json);
       setMessages(newMessages);
     });
   }
 
+  // subject.next({ join: username });
+
   return (
     <div>
-      <div className="card">{username} has entered the chat</div>
       {messages.map((message) => (
-        <div className="card">{message}</div>
+        <div className="card" key={message.id}>
+          {message.message}
+        </div>
       ))}
+      <input name="chatterbox" placeholder="type your message here..." />
       <style jsx>
         {`
           .card {

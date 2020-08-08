@@ -1,6 +1,7 @@
 // server.js
 const { createServer } = require("http");
 const { parse } = require("url");
+const { v4: uuidv4 } = require("uuid");
 const next = require("next");
 const WebSocket = require("ws");
 
@@ -8,6 +9,11 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 const port = dev ? 3000 : 80;
+
+const sendMessage = (ws, message) => {
+  const id = uuidv4();
+  ws.send(`{"message": "${message}", "id": "${id}"}`);
+};
 
 app.prepare().then(() => {
   const server = createServer((req, res) => {
@@ -24,9 +30,9 @@ app.prepare().then(() => {
     ws.on("message", (message) => {
       //log the received message and send it back to the client
       console.log("received: %s", message);
-      ws.send(`{"message": "Hello, you sent -> ${message}"}`);
+      sendMessage(ws, `Hello, you sent -> ${message}`);
     });
 
-    ws.send(`{"message": "Hi there, I am a WebSocket server"}`);
+    sendMessage(ws, `Hi there, I am a WebSocket server`);
   });
 });
