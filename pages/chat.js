@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Chat({ username, subject }) {
   let [messages, setMessages] = useState([]);
 
-  if (subject) {
+  useEffect(() => {
     subject.subscribe((json) => {
       let newMessages = [...messages];
       newMessages.push(json);
       setMessages(newMessages);
     });
-  }
 
-  // subject.next({ join: username });
+    // TODO: figure out how to make this work
+    // subject.next({ join: username });
+  });
 
   return (
     <div>

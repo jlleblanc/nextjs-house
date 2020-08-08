@@ -27,10 +27,20 @@ app.prepare().then(() => {
   const wss = new WebSocket.Server({ server });
 
   wss.on("connection", (ws) => {
-    ws.on("message", (message) => {
-      //log the received message and send it back to the client
-      console.log("received: %s", message);
-      sendMessage(ws, `Hello, you sent -> ${message}`);
+    let username = "";
+
+    ws.on("message", (raw) => {
+      const envelope = JSON.parse(raw);
+      console.log("received: %s", raw);
+      if (envelope.message) {
+        // TODO: this should send to *all* clients
+        sendMessage(ws, `Hello, you sent -> ${envelope.message}`);
+      } else if (envelope.join) {
+        // This is someone joining the chat
+        // TODO: this should send to *all* clients
+        username = envelope.join;
+        sendMessage(ws, `${username} joined the chat`);
+      }
     });
 
     sendMessage(ws, `Hi there, I am a WebSocket server`);
