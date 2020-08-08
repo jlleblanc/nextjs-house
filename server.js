@@ -28,6 +28,5 @@ app.prepare().then(() => {
     });
 
     ws.send(`{"message": "Hi there, I am a WebSocket server"}`);
-    setInterval(() => ws.send(`{ "message": "test" }`), 1000);
   });
 });
