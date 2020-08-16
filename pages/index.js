@@ -1,24 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Head from "next/head";
-import dynamic from "next/dynamic";
-import Login from "./login";
 import Chat from "./chat";
-import { Subject } from "rxjs";
+import Login from "./login";
 
-export default function Home() {
+export default function Home({ chatSubject }) {
   const [username, setUsername] = useState();
-  const ChatSocket = dynamic(() => import("../components/ChatSocket"));
-  const chatSubject = new Subject();
+
+  useEffect(() => {
+    // TODO: this is executing, but it is not actually going back
+    // to the server. How frustrating! Maybe I need a separate
+    // subject for submitting to the server?? Or is there possibly
+    // a way for me to use the browser's WebSocket object directly??
+    if (username) {
+      chatSubject.next({ join: username });
+    }
+  });
 
   const content = username ? (
-    <Chat username={username} subject={chatSubject} />
+    <Chat subject={chatSubject} />
   ) : (
     <Login enterUsernameHandler={setUsername} />
   );
 
   return (
     <div className="container">
-      <ChatSocket subject={chatSubject} />
       <Head>
         <title>House of Asdell-LeBlanc</title>
         <link rel="icon" href="/favicon.ico" />
