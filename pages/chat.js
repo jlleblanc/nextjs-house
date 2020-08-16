@@ -11,6 +11,16 @@ export default function Chat({ username, subject }) {
     });
 
     // TODO: figure out how to make this work
+    // here's what seems to be going on: we are in the useEffect hook
+    // which is being run as soon as the component is ready. When we
+    // hit this line, the subject changes, which causes another render
+    // before we even finish here.
+    //
+    // Ideally, I don't want to set up this websocket connection
+    // within React and instead want to pull something from the
+    // global scope. This might seem like a terrible thing in most
+    // programming contexts, but here it helps us avoid the problem
+    // where we are effectively re-rendering our subject every time.
     // subject.next({ join: username });
   });
 
