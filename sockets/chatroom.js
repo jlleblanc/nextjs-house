@@ -1,13 +1,21 @@
 const { v4: uuidv4 } = require("uuid");
 const WebSocket = require("ws");
 
+const prepMessage = (message, username = "") => {
+  const id = uuidv4();
+  return `{"message": "${message}", "id": "${id}", "username": "${username}"}`;
+};
+
+const sendMessage = (ws, message, username) => {
+  ws.send(prepMessage(message, username));
+};
+
+const broadcastMessage = (wss, message, username) => {
+  wss.clients.forEach((client) => sendMessage(client, message, username));
+};
+
 exports.chatroom = (server) => {
   const wss = new WebSocket.Server({ server });
-
-  const sendMessage = (ws, message) => {
-    const id = uuidv4();
-    ws.send(`{"message": "${message}", "id": "${id}"}`);
-  };
 
   wss.on("connection", (ws) => {
     let username = "";
@@ -16,13 +24,10 @@ exports.chatroom = (server) => {
       const envelope = JSON.parse(raw);
       console.log("received: %s", raw);
       if (envelope.message) {
-        // TODO: this should send to *all* clients
-        sendMessage(ws, `Hello, you sent -> ${envelope.message}`);
+        broadcastMessage(wss, envelope.message, username);
       } else if (envelope.join) {
-        // This is someone joining the chat
-        // TODO: this should send to *all* clients
         username = envelope.join;
-        sendMessage(ws, `${username} joined the chat`);
+        broadcastMessage(wss, `${username} joined the chat`);
       }
     });
 
