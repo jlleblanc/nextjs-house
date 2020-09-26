@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Chat from "./chat";
 import Login from "./login";
 
-export default function Home({ chatSubject }) {
+export default function Home() {
   const [username, setUsername] = useState();
 
   const content = username ? (
-    <Chat subject={chatSubject} username={username} />
+    <Chat username={username} />
   ) : (
     <Login enterUsernameHandler={setUsername} />
   );

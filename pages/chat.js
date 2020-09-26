@@ -1,40 +1,46 @@
 import React, { useState, useEffect } from "react";
 
-// hack
-let storedUsername;
+// This is a dirty-ish hack, but pure functional programming here hasn't delivered.
+let socket;
 
-export default function Chat({ subject, username }) {
+function setupSocket(username) {
+  socket = new WebSocket(`ws://${location.host}`);
+  socket.onopen = () => {
+    socket.send(JSON.stringify({ join: username }));
+  };
+}
+
+export default function Chat({ username }) {
   let [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    subject.subscribe((json) => {
+    if (!socket) setupSocket(username);
+
+    socket.onmessage = (message) => {
       let newMessages = [...messages];
-      newMessages.push(json);
+      newMessages.push(JSON.parse(message.data));
       setMessages(newMessages);
-    });
-
-    if (storedUsername) return;
-    storedUsername = username;
-
-    // TODO: this is executing, but it is not actually going back
-    // to the server. How frustrating! Maybe I need a separate
-    // subject for submitting to the server?? Or is there possibly
-    // a way for me to use the browser's WebSocket object directly??
-    subject.next({
-      join: username,
-      message: "joe has joined",
-      id: username,
-    });
+    };
   });
+
+  let sendMessage = (e) => {
+    e.preventDefault();
+    let input = e.target.getElementsByTagName("input")[0];
+    socket.send(JSON.stringify({ message: input.value }));
+    input.value = "";
+  };
 
   return (
     <div>
       {messages.map((message) => (
         <div className="card" key={message.id}>
-          {message.message}
+          {message.username ? `${message.username}:` : ""} {message.message}
         </div>
       ))}
-      <input name="chatterbox" placeholder="type your message here..." />
+      <form onSubmit={sendMessage}>
+        <input name="chatterbox" placeholder="type your message here..." />
+        <button>Send</button>
+      </form>
     </div>
   );
 }
