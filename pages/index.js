@@ -6,18 +6,8 @@ import Login from "./login";
 export default function Home({ chatSubject }) {
   const [username, setUsername] = useState();
 
-  useEffect(() => {
-    // TODO: this is executing, but it is not actually going back
-    // to the server. How frustrating! Maybe I need a separate
-    // subject for submitting to the server?? Or is there possibly
-    // a way for me to use the browser's WebSocket object directly??
-    if (username) {
-      chatSubject.next({ join: username });
-    }
-  });
-
   const content = username ? (
-    <Chat subject={chatSubject} />
+    <Chat subject={chatSubject} username={username} />
   ) : (
     <Login enterUsernameHandler={setUsername} />
   );
